@@ -14,19 +14,32 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hooksRedux';
 import { userListData, userListLoading, fetchUsers } from '@/features/users/usersSlice';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import * as Sentry from '@sentry/react-native';
 
 function getRandomInt(max: number) {
-    return Math.floor(Math.random() * max);
-  }
+  return Math.floor(Math.random() * max);
+}
 
 export default function SpecialistsScreen() {
   const dispatch = useAppDispatch();
   const doctors = useAppSelector(userListData);
   const doctorsLoading = useAppSelector(userListLoading);
   const { back } = useRouter();
+
   useEffect(() => {
     dispatch(fetchUsers());
   }, []);
+
+  function handlePressDoctor(doctor: UserInfo, throwError: boolean) {
+    Sentry.addBreadcrumb({
+      category: 'doctors',
+      message: 'Doctor card is pressed ' + doctor.name,
+      level: 'info'
+    });
+    if (throwError) {
+      throw new Error('Hello, again, Sentry!');
+    }
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -52,22 +65,29 @@ export default function SpecialistsScreen() {
             <ActivityIndicator size="large" color="#65c4a8" />
           </View>
         )}
-        {!doctorsLoading && doctors.map((doctor, index) => (
-          <View key={index} style={styles.doctorCard}>
-            <Image source={{ uri: 'https://i.pravatar.cc/300' }} style={styles.doctorImage} />
-            <View style={styles.doctorInfo}>
-              <Text style={styles.doctorName}>Dr. {doctor.name}</Text>
-              <Text style={styles.doctorSpecialty}>{doctor.email}</Text>
-              <View style={styles.ratingContainer}>
-                <Feather name="star" size={16} color="#FFD700" />
-                <Text style={styles.ratingText}>
-                  {5} ({getRandomInt(2005)} reviews)
-                </Text>
+        {!doctorsLoading &&
+          doctors.map((doctor, index) => (
+            <TouchableOpacity
+              onPress={() => {
+                handlePressDoctor(doctor, doctors.length === index + 1);
+              }}
+              key={index}
+              style={styles.doctorCard}
+            >
+              <Image source={{ uri: 'https://i.pravatar.cc/300' }} style={styles.doctorImage} />
+              <View style={styles.doctorInfo}>
+                <Text style={styles.doctorName}>Dr. {doctor.name}</Text>
+                <Text style={styles.doctorSpecialty}>{doctor.email}</Text>
+                <View style={styles.ratingContainer}>
+                  <Feather name="star" size={16} color="#FFD700" />
+                  <Text style={styles.ratingText}>
+                    {5} ({getRandomInt(2005)} reviews)
+                  </Text>
+                </View>
               </View>
-            </View>
-            {index % 2 === 0 && <View style={styles.onlineIndicator} />}
-          </View>
-        ))}
+              {index % 2 === 0 && <View style={styles.onlineIndicator} />}
+            </TouchableOpacity>
+          ))}
       </ScrollView>
     </SafeAreaView>
   );

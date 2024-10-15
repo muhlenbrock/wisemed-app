@@ -8,6 +8,18 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Provider } from 'react-redux';
 import { store } from '@/store/store';
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: 'https://b6966f642628c666521df9971c322c65@o4508128554778624.ingest.us.sentry.io/4508128557137920',
+  _experiments: {
+    replaysSessionSampleRate: 1.0,
+    replaysOnErrorSampleRate: 1.0,
+  },
+  integrations: [
+    Sentry.mobileReplayIntegration(),
+  ],
+});
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
