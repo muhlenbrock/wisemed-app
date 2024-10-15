@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
-const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export function Banner() {
@@ -22,7 +21,7 @@ export function Banner() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#65c4a8', // Color de fondo azul
+    backgroundColor: '#65c4a8',
     borderRadius: 18,
     paddingTop: 20,
     paddingHorizontal: 20

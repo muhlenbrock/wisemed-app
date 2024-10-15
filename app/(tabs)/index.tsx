@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hooksRedux';
 import { userListData, userListLoading, fetchUsers } from '@/features/users/usersSlice';
 import { Banner } from '@/components/Banner/Banner';
 import { Feather } from '@expo/vector-icons';
+import { Link } from 'expo-router';
 
 const Images = [
   require('../../assets/images/neurologia-icon.png'),
@@ -25,13 +26,15 @@ export default function HomeScreen() {
       <ThemedView style={styles.titleContainer}>
         <Banner />
       </ThemedView>
-      <TouchableOpacity style={styles.specialtyTouchable}>
-        <View style={styles.specialtyCard}>
-          <Text style={styles.specialtyTitle}>¿Tiene alguna dolencia?</Text>
-          <Text style={styles.specialtySubtitle}>Encuentre aquí especialistas adecuados</Text>
-        </View>
-        <Feather name="arrow-right" size={24} color="black" style={styles.specialtyArrow} />
-      </TouchableOpacity>
+      <Link href="/specialists" asChild>
+        <TouchableOpacity style={styles.specialtyTouchable}>
+          <View style={styles.specialtyCard}>
+            <Text style={styles.specialtyTitle}>¿Tiene alguna dolencia?</Text>
+            <Text style={styles.specialtySubtitle}>Encuentre aquí especialistas adecuados</Text>
+          </View>
+          <Feather name="arrow-right" size={24} color="black" style={styles.specialtyArrow} />
+        </TouchableOpacity>
+      </Link>
       <ThemedText style={styles.specialtyTitleDivider}>Especialidades 😷</ThemedText>
       <View style={styles.specialtyContainer}>
         {['Neurología', 'Genética', 'Odontología'].map((specialty, index) => {
