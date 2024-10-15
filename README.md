@@ -27,7 +27,7 @@ Para este proyecto se realizaron distintas tareas las cuales fueron:
 - Crear vistas home y lista de especialistas, basadas en aplicaciones de salud
 - Instalar y configurar Sentry, para simular un error en la ultima card de la lista de especialistas
 
-![](https://github.com/muhlenbrock/wisemed-app/blob/develop/wisemed.gif)
+![](https://github.com/muhlenbrock/wisemed-app/blob/develop/wisemed2.gif)
 
 ## Releases
 
