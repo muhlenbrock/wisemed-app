@@ -2,7 +2,7 @@
   "expo": {
     "name": "wisemed-app",
     "slug": "wisemed-app",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -29,7 +29,15 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "react-native",
+          "organization": "d66324526"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

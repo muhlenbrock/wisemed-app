@@ -1,46 +1,43 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from '@/store/store';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
+  const API_URL = 'https://jsonplaceholder.typicode.com/';
+  const response = await axios.get(API_URL + '/users');
+  return response.data;
+});
 
 const initialState = {
-  data: [] as UserInfo[],
-  loading: false,
-  error: null,
+  userList: {
+    data: [] as UserInfo[],
+    loading: false,
+    error: null as string | null
+  }
 };
 
 const userSlice = createSlice({
-  name: "users",
+  name: 'users',
   initialState,
-  reducers: {
-    getUsers: (state) => {
-      state.loading = true;
-      state.data = [
-        {
-          id: 1,
-          name: "Leanne Graham",
-          username: "Bret",
-          email: "Sincere@april.biz",
-          address: {
-            street: "Kulas Light",
-            suite: "Apt. 556",
-            city: "Gwenborough",
-            zipcode: "92998-3874",
-            geo: {
-              lat: "-37.3159",
-              lng: "81.1496",
-            },
-          },
-          phone: "1-770-736-8031 x56442",
-          website: "hildegard.org",
-          company: {
-            name: "Romaguera-Crona",
-            catchPhrase: "Multi-layered client-server neural-net",
-            bs: "harness real-time e-markets",
-          },
-        },
-      ];
-      state.loading = false;
-    },
-  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUsers.pending, (state, action) => {
+        state.userList.loading = true;
+        state.userList.data = [];
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.userList.data = action.payload;
+        state.userList.loading = false;
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.userList.loading = false;
+        state.userList.error = action.error.message ?? 'Unknown Error';
+      });
+  }
 });
 
-export const { getUsers } = userSlice.actions;
 export default userSlice.reducer;
+
+export const userListData = (state: RootState) => state.user.userList.data;
+export const userListLoading = (state: RootState) => state.user.userList.loading;
